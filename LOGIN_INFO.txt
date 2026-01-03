@@ -1,0 +1,28 @@
+========================================
+   ADMIN LOGIN CREDENTIALS
+========================================
+
+URL:      http://localhost:3001
+Username: admin
+Password: admin123
+
+========================================
+
+QUICK STEPS:
+1. Open http://localhost:3001
+2. Click "Login" tab
+3. Enter: admin / admin123
+4. Click "Login"
+5. Go to "Admin Panel" in lobby
+6. Enjoy all admin features!
+
+========================================
+
+ADMIN FEATURES:
+✅ Add points to users
+✅ Suspend/activate users
+✅ Approve withdrawals
+✅ Control games
+✅ View history
+
+========================================
