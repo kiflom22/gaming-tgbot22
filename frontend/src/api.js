@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// Hardcoded for production deployment
+const API_BASE = 'https://gaming-tgbot22-1.onrender.com'
 
 // Store auth token
 let authToken = null
