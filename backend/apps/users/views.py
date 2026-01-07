@@ -1,12 +1,24 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_GET
 import json
 from .models import User, Withdrawal
 from .serializers import UserSerializer, WithdrawalSerializer
 from .utils import validate_telegram_init_data
 from .jwt_utils import generate_token
 from .middleware import require_auth
+
+
+@csrf_exempt
+@require_GET
+def health_check(request):
+    """Health check endpoint for monitoring backend status"""
+    return JsonResponse({
+        'status': 'healthy',
+        'service': 'Django Backend',
+        'url': 'https://gaming-tgbot22-1.onrender.com',
+        'message': 'Backend is running successfully!'
+    })
 
 
 @csrf_exempt

@@ -21,7 +21,13 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-# Add Railway domain
+# Add Render domain
+ALLOWED_HOSTS.extend([
+    'gaming-tgbot22-1.onrender.com',
+    'shamvirtual.vercel.app',
+])
+
+# Add Railway domain (if using Railway)
 if 'RAILWAY_STATIC_URL' in os.environ:
     ALLOWED_HOSTS.append(os.environ['RAILWAY_STATIC_URL'].replace('https://', ''))
 
@@ -140,10 +146,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://127.0.0.1:5173'
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    'https://shamvirtual.vercel.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+
+# Add any additional origins from environment
+env_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
+if env_origins:
+    CORS_ALLOWED_ORIGINS.extend(env_origins.split(','))
 
 # Allow all Vercel preview URLs
 CORS_ALLOWED_ORIGIN_REGEXES = [
@@ -185,6 +197,12 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 JWT_SECRET = os.getenv('JWT_SECRET', 'change-this-jwt-secret')
 JWT_ALGORITHM = 'HS256'
 JWT_EXPIRATION_DAYS = 7
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://gaming-tgbot22-1.onrender.com',
+    'https://shamvirtual.vercel.app',
+]
 
 # Security settings for production
 if not DEBUG:
