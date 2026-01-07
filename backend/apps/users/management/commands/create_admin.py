@@ -11,14 +11,17 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING('Admin user already exists!'))
             admin = User.objects.get(username='admin')
             admin.is_admin = True
+            admin.password = 'admin123'  # Reset password
             admin.save()
-            self.stdout.write(self.style.SUCCESS(f'Updated admin status for: {admin.username}'))
+            self.stdout.write(self.style.SUCCESS(f'Updated admin: {admin.username}'))
+            self.stdout.write(self.style.SUCCESS(f'Password reset to: admin123'))
             return
 
         # Create admin user
         admin = User.objects.create(
             telegram_id=999999999,
             username='admin',
+            password='admin123',  # Set default password
             first_name='Admin',
             last_name='User',
             is_admin=True,
