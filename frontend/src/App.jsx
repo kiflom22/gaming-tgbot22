@@ -54,30 +54,41 @@ export default function App() {
     getGameStatus().then(statuses => setGameStatuses(statuses)).catch(() => {})
   }, [])
 
-  // Auto-refresh balance every 5 seconds when authenticated
+  // Auto-refresh balance and admin status every 5 seconds when authenticated
   useEffect(() => {
     if (!isAuthenticated) return
 
-    const refreshBalance = async () => {
+    const refreshUserData = async () => {
       const bal = await getUserBalance()
       if (typeof bal === 'number') {
         setBalance(bal)
-        // Also update localStorage
-        const userData = localStorage.getItem('user_data')
-        if (userData) {
-          const parsedUser = JSON.parse(userData)
-          const updatedUser = { ...parsedUser, balance: bal }
-          setUser(updatedUser)
-          localStorage.setItem('user_data', JSON.stringify(updatedUser))
+      }
+      
+      // Also verify token to get latest admin status
+      const token = localStorage.getItem('auth_token')
+      if (token) {
+        try {
+          const response = await fetch('https://gaming-tgbot22-1.onrender.com/api/user/verify/', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+          const data = await response.json()
+          if (data.user && !data.error) {
+            setUser(data.user)
+            setIsAdmin(data.is_admin)
+            localStorage.setItem('user_data', JSON.stringify(data.user))
+            localStorage.setItem('is_admin', data.is_admin)
+          }
+        } catch (err) {
+          console.log('Token verification failed:', err)
         }
       }
     }
 
     // Refresh immediately
-    refreshBalance()
+    refreshUserData()
 
     // Then refresh every 5 seconds
-    const interval = setInterval(refreshBalance, 5000)
+    const interval = setInterval(refreshUserData, 5000)
 
     return () => clearInterval(interval)
   }, [isAuthenticated])
