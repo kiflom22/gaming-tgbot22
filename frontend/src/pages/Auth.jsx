@@ -40,7 +40,8 @@ export default function Auth({ onAuthSuccess }) {
     try {
       if (isLogin) {
         // Login
-        const response = await fetch('http://localhost:8000/api/user/login/', {
+        const API_BASE = import.meta.env.VITE_API_URL || 'https://gaming-tgbot22-1.onrender.com'
+        const response = await fetch(`${API_BASE}/api/user/login/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -89,7 +90,8 @@ export default function Auth({ onAuthSuccess }) {
           return
         }
 
-        const response = await fetch('http://localhost:8000/api/user/register/', {
+        const API_BASE = import.meta.env.VITE_API_URL || 'https://gaming-tgbot22-1.onrender.com'
+        const response = await fetch(`${API_BASE}/api/user/register/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
